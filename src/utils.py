@@ -53,9 +53,10 @@ def print_inputs_menu() -> list[str]:
         print(f"No files found in the '{INPUTS_DIR.name}' folder.")
         return []
         
-    print("--- Select a file ---")
+    print("--- Select a option ---")
     for i, filename in enumerate(files, 1):
         print(f"{i}. {filename}")
-    print("-" * 20)
+    print("0. Exit")
+    print("-" * 23)
     
     return files

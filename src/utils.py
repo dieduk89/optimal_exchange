@@ -35,3 +35,27 @@ def write_text_file(filename: str, content: str) -> None:
     
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(content)
+
+def print_inputs_menu() -> list[str]:
+    """
+    Prints a menu listing all files in the inputs folder.
+    
+    Returns:
+        list[str]: A list of filenames available in the inputs folder.
+    """
+    if not INPUTS_DIR.exists():
+        print(f"Inputs directory '{INPUTS_DIR.name}' not found.")
+        return []
+
+    files = [f.name for f in INPUTS_DIR.iterdir() if f.is_file()]
+    
+    if not files:
+        print(f"No files found in the '{INPUTS_DIR.name}' folder.")
+        return []
+        
+    print("--- Select a file ---")
+    for i, filename in enumerate(files, 1):
+        print(f"{i}. {filename}")
+    print("-" * 20)
+    
+    return files

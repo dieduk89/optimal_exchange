@@ -1,0 +1,37 @@
+import os
+from pathlib import Path
+
+# Get the project root directory
+PROJECT_ROOT = Path(__file__).parent.parent
+
+INPUTS_DIR = PROJECT_ROOT / 'inputs'
+OUTPUTS_DIR = PROJECT_ROOT / 'outputs'
+
+def read_text_file(filename: str) -> str:
+    """
+    Reads a text file from the inputs folder.
+    
+    Args:
+        filename (str): The name or relative path of the file to read.
+        
+    Returns:
+        str: The contents of the text file.
+    """
+    file_path = INPUTS_DIR / filename
+    with open(file_path, 'r', encoding='utf-8') as f:
+        return f.read()
+
+def write_text_file(filename: str, content: str) -> None:
+    """
+    Writes content to a text file in the outputs folder.
+    
+    Args:
+        filename (str): The name or relative path of the file to write.
+        content (str): The text content to write to the file.
+    """
+    file_path = OUTPUTS_DIR / filename
+    # Ensure the directory exists in case of nested paths
+    file_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(content)

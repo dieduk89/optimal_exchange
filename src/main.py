@@ -18,7 +18,7 @@ def main():
                 print(f"\ {selected_file}...")
                 content = utils.read_text_file(selected_file)
                 result = solution.solve(content)
-                #tils.write_text_file(f"{selected_file}.out", solution)
+                utils.write_text_file(f"{selected_file}.out", result)
             else:
                 print(f"Invalid choice. Please enter a number between 0 and {len(files)}.")
         except ValueError:

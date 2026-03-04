@@ -1,5 +1,6 @@
 import sys
 import utils
+import solution
 
 def main():
     while True:
@@ -14,11 +15,10 @@ def main():
                 return
             if 1 <= index <= len(files):
                 selected_file = files[index - 1]
-                print(f"\nReading {selected_file}...")
+                print(f"\ {selected_file}...")
                 content = utils.read_text_file(selected_file)
-                print("--- Content ---")
-                print(content)
-                print("---------------")
+                result = solution.solve(content)
+                #tils.write_text_file(f"{selected_file}.out", solution)
             else:
                 print(f"Invalid choice. Please enter a number between 0 and {len(files)}.")
         except ValueError:

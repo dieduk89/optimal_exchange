@@ -13,31 +13,43 @@ def solve(case: str) -> str:
         results.append(optimal_exchange) 
     return "\n".join(results)
 
-def find_optimal_exchange(k: int, size: int, coins: list[int]) -> str:
-    optimals_values = [i + 1 if i + 1 not in coins else 1 for i in range(k)]
+def find_optimal_exchangeV2(k: int, size: int, coins: list[int]) -> str:
+    optimals_values = [1 if i + 1 in coins else 0 for i in range(k)]
+    zeros = optimals_values.count(0)
+    max_value = 1
 
-    #first iteration to find the optimal exchanges for each value
-    for i in range(k):
-        optimals_values[i] = calculate_optimal_exchanges(optimals_values, i + 1, coins)
-    #second iteration to find the optimal exchanges for each value
-    for i in range(k):
-        optimals_values[i] = calculate_optimal_exchanges(optimals_values, i + 1, coins) 
+    while zeros > 0:
+        max_value += 1
+        x = 1
+        y = max_value - x
+        values_to_update = set()
+        while x <= y:
+            #find all posible values of k for x
+            xlist = [i + 1 for i in range(k) if optimals_values[i] == x]
+            #find all posible values of k for y
+            ylist = [i + 1 for i in range(k) if optimals_values[i] == y]
+            #find all posible values of k for x + y
+            values1 = (xval + yval for xval in xlist for yval in ylist if xval + yval <= k)
+            #find all posible values of k for |x - y|
+            values2 = (abs(xval - yval) for xval in xlist for yval in ylist if abs(xval - yval) >= 1)
+            #filter values for optimals_values
+            values = (v for v in set(values1) | set(values2) if optimals_values[v - 1] == 0)
+            values_to_update.update(values)
+            x += 1
+            y = max_value - x     
 
-    ## in the most cases the optimal exchange is found in the second iteration
-    ## but maybe in some cases it is necessary to iterate more times
-       
+        for val in values_to_update:
+            optimals_values[val - 1] = max_value
+    
+        zeros = optimals_values.count(0)
+
     avg_value = round(sum(optimals_values) / len(optimals_values), 2)
-    max_value = max(optimals_values)
+
     print(f"Avg value: {avg_value}") 
     print(f"Max value: {max_value}")
+
     return f"{avg_value} {max_value}"
 
-
-def calculate_optimal_exchanges(optimals_values: list[int], x: int, coins: list[int]) -> int:
-    exchanges = [optimals_values[x - 1]]
-    for coin in coins:
-        diff = abs(coin - x)
-        exchanges.append(optimals_values[diff - 1] + 1)
-    return min(exchanges)
+    
 
    
